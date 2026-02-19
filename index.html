@@ -828,8 +828,7 @@ function renderSidebar() {
   projects.forEach(p => {
     const el = document.createElement('div');
     el.className = 'project-item' + (p.id === currentProjectId ? ' active' : '');
-    el.onclick = () => { currentProjectId = p.id; renderSidebar(); openProjectView(); };
-    el.innerHTML = `<div class="proj-name">${escHtml(p.title)}</div><div class="proj-meta"><span class="proj-badge ${p.status}">${p.status}</span><span>${fmtDate(p.created_at)}</span></div>`;
+    el.onclick = async () => { currentProjectId = p.id; renderSidebar(); await openProjectView(); };    el.innerHTML = `<div class="proj-name">${escHtml(p.title)}</div><div class="proj-meta"><span class="proj-badge ${p.status}">${p.status}</span><span>${fmtDate(p.created_at)}</span></div>`;
     list.appendChild(el);
   });
 }
