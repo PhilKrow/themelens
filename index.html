@@ -758,15 +758,11 @@ function deleteProject() {
 
 function renderSidebar() {
   const list = document.getElementById('projects-list');
-  const empty = document.getElementById('empty-projects');
+  list.innerHTML = '';
   if (!state.projects.length) {
-    empty.style.display = 'block';
-    list.innerHTML = '';
-    list.appendChild(empty);
+    list.innerHTML = '<div class="empty-state">No projects yet.<br>Create one to begin.</div>';
     return;
   }
-  empty.style.display = 'none';
-  list.innerHTML = '';
   state.projects.forEach(p => {
     const el = document.createElement('div');
     el.className = 'project-item' + (p.id === state.currentProjectId ? ' active' : '');
