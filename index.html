@@ -4,26 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ThemeLens — Qualitative Analysis</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #111213;
-  --sidebar-bg: #0d0e0f;
-  --surface: #18191b;
-  --surface2: #1f2022;
-  --surface3: #252729;
-  --border: #2c2e30;
-  --border2: #363a3c;
-  --accent: #e8c547;
-  --accent2: #47b8e8;
-  --accent3: #e84778;
-  --accent4: #47e8a0;
-  --text: #dde0e2;
-  --text-muted: #7a8285;
-  --text-dim: #404548;
-  --font-display: 'Lora', serif;
-  --font-mono: 'IBM Plex Mono', monospace;
-  --font-body: 'IBM Plex Sans', sans-serif;
+  --bg: #0f1012;
+  --sidebar-bg: #0b0c0e;
+  --surface: #161719;
+  --surface2: #1c1e20;
+  --surface3: #222426;
+  --border: #282b2d;
+  --border2: #333638;
+  --accent: #d4a843;
+  --accent2: #5ba3c9;
+  --accent3: #c94f72;
+  --accent4: #4db885;
+  --text: #d8dce0;
+  --text-muted: #6e7578;
+  --text-dim: #3a3e40;
+  --font-display: 'Cormorant Garamond', serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
@@ -31,7 +31,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 
 /* ── TOPBAR ── */
 #topbar{height:48px;background:var(--sidebar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:16px;flex-shrink:0;z-index:100}
-.logo-mark{font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--text);letter-spacing:-0.01em}
+.logo-mark{font-family:var(--font-display);font-size:1.25rem;font-weight:600;color:var(--text);letter-spacing:0.01em}
 .logo-mark span{color:var(--accent)}
 .topbar-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
 .topbar-btn{font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);background:none;border:1px solid var(--border);padding:5px 12px;cursor:pointer;transition:all 0.15s}
@@ -53,9 +53,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .icon-btn{width:24px;height:24px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0}
 .icon-btn:hover{border-color:var(--accent);color:var(--accent)}
 #projects-list{flex:1;overflow-y:auto;padding:8px}
-.project-item{padding:10px 12px;cursor:pointer;border:1px solid transparent;margin-bottom:2px;transition:all 0.15s;border-radius:2px}
-.project-item:hover{background:var(--surface);border-color:var(--border)}
-.project-item.active{background:var(--surface);border-color:var(--accent)}
+.project-item{padding:10px 14px;cursor:pointer;border:1px solid transparent;border-left:3px solid transparent;margin-bottom:2px;transition:all 0.15s}
+.project-item:hover{background:var(--surface);border-color:var(--border);border-left-color:var(--border2)}
+.project-item.active{background:var(--surface);border-color:var(--border);border-left-color:var(--accent)}
 .proj-name{font-size:0.82rem;font-weight:400;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .proj-meta{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim);display:flex;gap:8px}
 .proj-badge{padding:1px 5px;border-radius:2px;font-size:0.58rem}
@@ -78,7 +78,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .project-title-area{flex:1}
 #proj-title{font-family:var(--font-display);font-size:1.4rem;font-weight:600;color:var(--text);margin-bottom:4px}
 #proj-desc{font-size:0.8rem;color:var(--text-muted);font-weight:300}
-.project-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.project-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;align-items:center}
+.proj-action-btn{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);background:none;border:1px solid var(--border);padding:5px 10px;cursor:pointer;transition:all 0.15s}
+.proj-action-btn:hover{border-color:var(--border2);color:var(--text-muted)}
+.proj-action-btn.danger{color:var(--text-dim)}
+.proj-action-btn.danger:hover{border-color:var(--accent3);color:var(--accent3)}
 
 /* TABS */
 #proj-tabs{padding:0 24px;border-bottom:1px solid var(--border);display:flex;gap:0;flex-shrink:0}
@@ -171,7 +175,7 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .result-summary{background:var(--surface);border-left:3px solid var(--accent2);padding:14px 18px;margin-bottom:24px;font-size:0.85rem;line-height:1.7;color:var(--text-muted)}
 .results-stats{display:flex;gap:24px;margin-bottom:24px}
 .stat-item{text-align:center}
-.stat-val{font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--accent);line-height:1}
+.stat-val{font-family:var(--font-display);font-size:2.2rem;font-weight:400;color:var(--accent);line-height:1;font-style:italic}
 .stat-lbl{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-top:4px}
 
 /* THEME CARDS */
@@ -180,9 +184,9 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .theme-card.highlighted{border-color:var(--accent)}
 .theme-hdr{padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;user-select:none}
 .theme-hdr:hover{background:rgba(232,197,71,0.03)}
-.theme-num{font-family:var(--font-display);font-size:2.2rem;font-weight:600;color:var(--text-dim);line-height:1;flex-shrink:0;width:44px}
+.theme-num{font-family:var(--font-display);font-size:2.8rem;font-weight:400;color:var(--text-dim);line-height:0.9;flex-shrink:0;width:52px;font-style:italic}
 .theme-info{flex:1}
-.theme-name{font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.theme-name{font-family:var(--font-display);font-size:1.2rem;font-weight:600;color:var(--text);margin-bottom:6px;letter-spacing:-0.01em}
 .theme-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.6}
 .theme-chevron{font-size:0.7rem;color:var(--text-dim);flex-shrink:0;padding-top:4px;transition:transform 0.2s}
 .theme-chevron.open{transform:rotate(180deg)}
@@ -190,8 +194,8 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .theme-body.open{display:block}
 
 /* SUBTHEMES */
-.subtheme{margin-top:16px;padding-left:16px;border-left:2px solid var(--accent2)}
-.sub-name{font-family:var(--font-mono);font-size:0.72rem;font-weight:500;color:var(--accent2);margin-bottom:4px}
+.subtheme{margin-top:16px;padding-left:20px;border-left:2px solid rgba(91,163,201,0.4)}
+.sub-name{font-family:var(--font-mono);font-size:0.68rem;font-weight:500;color:var(--accent2);margin-bottom:6px;letter-spacing:0.05em}
 .sub-id{font-size:0.58rem;color:var(--text-dim);margin-right:6px}
 .sub-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px}
 
@@ -436,9 +440,18 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
           <div id="proj-desc"></div>
         </div>
         <div class="project-actions">
-          <button class="topbar-btn" onclick="editProject()">Edit</button>
-          <button class="topbar-btn" onclick="archiveProject()">Archive</button>
-          <button class="topbar-btn" style="color:var(--accent3);border-color:var(--accent3)" onclick="deleteProject()">Delete</button>
+          <button class="proj-action-btn" onclick="editProject()" title="Edit project">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit
+          </button>
+          <button class="proj-action-btn" onclick="archiveProject()" title="Archive project" id="archive-btn">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+            Archive
+          </button>
+          <button class="proj-action-btn danger" onclick="deleteProject()" title="Delete project">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            Delete
+          </button>
         </div>
       </div>
 
@@ -596,9 +609,10 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
 
       <!-- EXPORT BAR -->
       <div class="export-bar" id="export-bar" style="display:none">
-        <button class="topbar-btn" onclick="exportTXT()">Export TXT</button>
-        <button class="topbar-btn" onclick="exportCSV()">Export CSV</button>
-        <button class="topbar-btn" onclick="exportJSON()">Export JSON</button>
+        <span style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-right:4px">Export:</span>
+        <button class="topbar-btn" onclick="exportTXT()" title="Full report as text file">TXT Report</button>
+        <button class="topbar-btn" onclick="exportCSV()" title="Codes and excerpts as spreadsheet">CSV Codes</button>
+        <button class="topbar-btn" onclick="exportJSON()" title="Complete analysis data">JSON</button>
       </div>
 
     </div><!-- /project-view -->
@@ -1030,27 +1044,25 @@ function deleteProject() {
 
 function renderSidebar() {
   const list = document.getElementById('projects-list');
-  const empty = document.getElementById('empty-projects');
+  list.innerHTML = '';
   if (!state.projects.length) {
-    empty.style.display = 'block';
-    list.innerHTML = '';
-    list.appendChild(empty);
+    list.innerHTML = '<div class="empty-state">No projects yet.<br>Create one to begin.</div>';
     return;
   }
-  empty.style.display = 'none';
-  list.innerHTML = '';
   state.projects.forEach(p => {
     const el = document.createElement('div');
     el.className = 'project-item' + (p.id === state.currentProjectId ? ' active' : '');
-    el.onclick = () => { state.currentProjectId = p.id; renderSidebar(); openProjectView(); };
+    el.addEventListener('click', () => { state.currentProjectId = p.id; renderSidebar(); openProjectView(); });
     const docsCount = p.documents?.length || 0;
     const runsCount = p.runs?.length || 0;
+    const date = p.created ? new Date(p.created).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '';
     el.innerHTML = `
       <div class="proj-name">${escHtml(p.title)}</div>
       <div class="proj-meta">
+        <span class="proj-badge ${p.status}">${p.status}</span>
         <span>${docsCount} doc${docsCount!==1?'s':''}</span>
         <span>${runsCount} run${runsCount!==1?'s':''}</span>
-        <span class="proj-badge ${p.status}">${p.status}</span>
+        ${date ? '<span>' + date + '</span>' : ''}
       </div>`;
     list.appendChild(el);
   });
