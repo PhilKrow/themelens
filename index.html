@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ThemeLens — Qualitative Analysis</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
   --bg: #111213;
@@ -30,91 +29,48 @@
 html,body{height:100%;overflow:hidden}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;font-size:14px;display:flex;flex-direction:column}
 
-/* ── AUTH SCREEN ── */
-#auth-screen{display:flex;flex:1;align-items:center;justify-content:center;flex-direction:column;gap:0;background:var(--bg);position:relative;overflow:hidden}
-#auth-screen::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(232,197,71,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(232,197,71,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
-.auth-card{background:var(--surface);border:1px solid var(--border);padding:48px;width:440px;max-width:90vw;position:relative;z-index:1;animation:fadeUp 0.4s ease}
-.auth-logo{font-family:var(--font-display);font-size:2rem;font-weight:600;color:var(--text);margin-bottom:6px}
-.auth-logo span{color:var(--accent)}
-.auth-tagline{font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:36px}
-.auth-step{margin-bottom:28px}
-.auth-step-num{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-.auth-step-title{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:4px}
-.auth-step-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.6}
-.auth-step-desc a{color:var(--accent2);text-decoration:none}
-.auth-step-desc a:hover{text-decoration:underline}
-.auth-divider{border:none;border-top:1px solid var(--border);margin:28px 0}
-.btn-google{width:100%;background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.08em;padding:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s}
-.btn-google:hover{border-color:var(--accent);background:var(--surface3)}
-.google-icon{width:18px;height:18px;flex-shrink:0}
-.auth-note{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim);text-align:center;margin-top:16px;line-height:1.7}
-
-/* ── ONBOARDING (after login, before API key) ── */
-#onboarding-screen{display:none;flex:1;align-items:center;justify-content:center;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
-#onboarding-screen::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(232,197,71,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(232,197,71,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
-.onboard-card{background:var(--surface);border:1px solid var(--border);padding:48px;width:520px;max-width:90vw;position:relative;z-index:1;animation:fadeUp 0.4s ease}
-.onboard-title{font-family:var(--font-display);font-size:1.5rem;font-weight:600;color:var(--text);margin-bottom:6px}
-.onboard-sub{font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:28px}
-.onboard-steps{display:flex;flex-direction:column;gap:16px;margin-bottom:28px}
-.onboard-step{display:flex;gap:14px;align-items:flex-start;padding:14px;background:var(--surface2);border:1px solid var(--border)}
-.onboard-step-num{font-family:var(--font-display);font-size:1.4rem;font-weight:600;color:var(--accent);line-height:1;flex-shrink:0;width:28px}
-.onboard-step-content{}
-.onboard-step-title{font-size:0.82rem;font-weight:500;color:var(--text);margin-bottom:3px}
-.onboard-step-desc{font-size:0.75rem;color:var(--text-muted);line-height:1.55}
-.onboard-step-desc a{color:var(--accent2);text-decoration:none}
-.onboard-step-desc a:hover{text-decoration:underline}
-.onboard-input-row{display:flex;gap:8px;margin-top:28px}
-#onboard-key-input{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font-mono);font-size:0.8rem;padding:12px;outline:none;transition:border-color 0.15s}
-#onboard-key-input:focus{border-color:var(--accent)}
-#onboard-key-input::placeholder{color:var(--text-dim)}
-.btn-primary{background:var(--accent);color:#111;border:none;font-family:var(--font-mono);font-size:0.72rem;font-weight:500;letter-spacing:0.08em;padding:12px 24px;cursor:pointer;transition:all 0.15s;white-space:nowrap}
-.btn-primary:hover{background:#f0d060;transform:translateY(-1px)}
-.err-msg{background:rgba(232,71,120,0.08);border:1px solid rgba(232,71,120,0.25);border-left:3px solid var(--accent3);padding:10px 14px;font-family:var(--font-mono);font-size:0.7rem;color:var(--accent3);margin-top:10px;display:none;line-height:1.6}
-.err-msg.visible{display:block}
-
 /* ── TOPBAR ── */
-#topbar{height:48px;background:var(--sidebar-bg);border-bottom:1px solid var(--border);display:none;align-items:center;padding:0 16px;gap:16px;flex-shrink:0;z-index:100}
+#topbar{height:48px;background:var(--sidebar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:16px;flex-shrink:0;z-index:100}
 .logo-mark{font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--text);letter-spacing:-0.01em}
 .logo-mark span{color:var(--accent)}
 .topbar-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
 .topbar-btn{font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);background:none;border:1px solid var(--border);padding:5px 12px;cursor:pointer;transition:all 0.15s}
 .topbar-btn:hover{border-color:var(--accent);color:var(--accent)}
 .topbar-btn.primary{background:var(--accent);color:#111;border-color:var(--accent);font-weight:500}
-.topbar-btn.primary:hover{background:#f0d060}
-#user-info{margin-left:auto;display:flex;align-items:center;gap:10px}
-#user-email{font-family:var(--font-mono);font-size:0.62rem;color:var(--text-dim)}
-#api-indicator{display:flex;align-items:center;gap:5px;cursor:pointer;padding:4px 8px;border:1px solid var(--border);transition:border-color 0.15s}
-#api-indicator:hover{border-color:var(--accent)}
-#api-dot{width:6px;height:6px;border-radius:50%;background:var(--accent4)}
-#api-indicator-text{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim)}
-.btn-signout{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim);background:none;border:1px solid var(--border);padding:4px 10px;cursor:pointer;transition:all 0.15s}
-.btn-signout:hover{border-color:var(--accent3);color:var(--accent3)}
+.topbar-btn.primary:hover{background:#f0d060;color:#111}
+#apiStatus{font-family:var(--font-mono);font-size:0.62rem;color:var(--text-dim);margin-left:auto;display:flex;align-items:center;gap:6px;cursor:pointer}
+#apiDot{width:6px;height:6px;border-radius:50%;background:var(--text-dim);flex-shrink:0}
+#apiDot.ok{background:var(--accent4)}
+#apiDot.err{background:var(--accent3)}
 
 /* ── LAYOUT ── */
-#app{display:none;flex:1;overflow:hidden}
+#app{display:flex;flex:1;overflow:hidden}
 
 /* ── LEFT SIDEBAR ── */
 #sidebar{width:240px;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
 #sidebar-header{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .sidebar-title{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted)}
-.icon-btn{width:24px;height:24px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.icon-btn{width:24px;height:24px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0}
 .icon-btn:hover{border-color:var(--accent);color:var(--accent)}
 #projects-list{flex:1;overflow-y:auto;padding:8px}
 .project-item{padding:10px 12px;cursor:pointer;border:1px solid transparent;margin-bottom:2px;transition:all 0.15s;border-radius:2px}
 .project-item:hover{background:var(--surface);border-color:var(--border)}
 .project-item.active{background:var(--surface);border-color:var(--accent)}
 .proj-name{font-size:0.82rem;font-weight:400;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.proj-meta{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim);display:flex;gap:8px;align-items:center}
+.proj-meta{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim);display:flex;gap:8px}
 .proj-badge{padding:1px 5px;border-radius:2px;font-size:0.58rem}
 .proj-badge.active{background:rgba(72,184,232,0.15);color:var(--accent2)}
 .proj-badge.archived{background:rgba(100,100,100,0.15);color:var(--text-dim)}
 .empty-state{padding:24px 12px;text-align:center;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);line-height:1.8}
 
-/* ── MAIN ── */
+/* ── MAIN AREA ── */
 #main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-#welcome{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:48px}
+
+/* WELCOME SCREEN */
+#welcome{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;padding:48px}
 .welcome-title{font-family:var(--font-display);font-size:2rem;font-weight:600;color:var(--text);text-align:center}
 .welcome-sub{font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);letter-spacing:0.1em;text-align:center;line-height:1.8}
+.welcome-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 
 /* PROJECT VIEW */
 #project-view{flex:1;display:none;flex-direction:column;overflow:hidden}
@@ -130,9 +86,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .proj-tab:hover{color:var(--text)}
 .proj-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 
+/* TAB CONTENT */
 #tab-content{flex:1;overflow:hidden;display:flex}
 
-/* DOCUMENTS */
+/* DOCUMENTS TAB */
 #tab-documents{flex:1;overflow-y:auto;padding:24px;display:none}
 #tab-documents.active{display:block}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -141,6 +98,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .docs-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
 .docs-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:0.82rem;vertical-align:middle}
 .docs-table tr:hover td{background:var(--surface)}
+.doc-name{font-weight:400;color:var(--text)}
 .doc-source{font-family:var(--font-mono);font-size:0.65rem;color:var(--text-muted);padding:2px 6px;background:var(--surface2);border:1px solid var(--border)}
 .doc-date{font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim)}
 .doc-actions{display:flex;gap:6px}
@@ -148,9 +106,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .small-btn:hover{border-color:var(--accent2);color:var(--accent2)}
 .small-btn.danger:hover{border-color:var(--accent3);color:var(--accent3)}
 
-/* ANALYSIS */
+/* ANALYSIS TAB */
 #tab-analysis{flex:1;overflow-y:auto;padding:24px;display:none}
 #tab-analysis.active{display:block}
+
+/* METHODOLOGY CARDS */
 .method-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px}
 .method-card{border:1px solid var(--border);padding:14px 16px;cursor:pointer;transition:all 0.15s;background:var(--surface)}
 .method-card:hover{border-color:var(--accent);background:var(--surface2)}
@@ -159,14 +119,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .method-tag{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
 .method-name{font-size:0.85rem;font-weight:500;color:var(--text);margin-bottom:4px}
 .method-desc{font-size:0.72rem;color:var(--text-muted);line-height:1.55}
-.method-check{display:none;font-family:var(--font-mono);font-size:0.6rem;color:var(--accent);margin-top:8px}
 .method-card.selected .method-check{display:block}
+.method-check{display:none;font-family:var(--font-mono);font-size:0.6rem;color:var(--accent);margin-top:8px}
+
+/* ANALYSIS OPTIONS */
 .options-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px}
 .opt-group{display:flex;flex-direction:column;gap:6px}
 .opt-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted)}
 select,input[type=text],input[type=password],textarea{background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--font-mono);font-size:0.78rem;padding:8px 12px;outline:none;width:100%;transition:border-color 0.15s}
 select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%237a8285'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer}
 select:focus,input:focus,textarea:focus{border-color:var(--accent)}
+
+/* DEDUCTIVE CATEGORIES */
 #deductive-panel{display:none;margin-bottom:24px;border:1px solid var(--border);padding:16px;background:var(--surface)}
 .deductive-header{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:10px}
 #categories-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:28px}
@@ -174,11 +138,16 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .category-tag button{background:none;border:none;color:var(--accent2);cursor:pointer;font-size:0.7rem;opacity:0.6;padding:0}
 .category-tag button:hover{opacity:1}
 .add-cat-row{display:flex;gap:8px}
+#catInput{flex:1}
+
+/* ANALYSIS RUN BTN */
 .run-bar{display:flex;align-items:center;gap:16px;padding:16px 0;border-top:1px solid var(--border);margin-top:8px}
-.btn-run{font-family:var(--font-display);font-size:0.95rem;font-weight:600;background:var(--accent);color:#111;border:none;padding:12px 36px;cursor:pointer;transition:all 0.2s}
+.btn-run{font-family:var(--font-display);font-size:0.95rem;font-weight:600;background:var(--accent);color:#111;border:none;padding:12px 36px;cursor:pointer;transition:all 0.2s;letter-spacing:0.01em}
 .btn-run:hover:not(:disabled){background:#f0d060;transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,197,71,0.25)}
 .btn-run:disabled{opacity:0.35;cursor:not-allowed}
 .run-note{font-family:var(--font-mono);font-size:0.62rem;color:var(--text-dim);line-height:1.7}
+
+/* RUNS LIST */
 .runs-section{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
 .run-item{border:1px solid var(--border);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:16px;background:var(--surface);transition:border-color 0.15s;cursor:pointer}
 .run-item:hover{border-color:var(--accent2)}
@@ -189,17 +158,23 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .run-meta{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim)}
 .run-status{font-family:var(--font-mono);font-size:0.58rem;padding:3px 8px;border-radius:2px}
 .run-status.complete{background:rgba(71,232,160,0.1);color:var(--accent4)}
+.run-status.running{background:rgba(232,197,71,0.1);color:var(--accent)}
+.run-status.failed{background:rgba(232,71,120,0.1);color:var(--accent3)}
 .run-actions{display:flex;gap:6px}
 
-/* RESULTS */
+/* RESULTS TAB */
 #tab-results{flex:1;overflow:hidden;display:none;flex-direction:row}
 #tab-results.active{display:flex}
+
+/* RESULTS MAIN */
 #results-main{flex:1;overflow-y:auto;padding:24px}
 .result-summary{background:var(--surface);border-left:3px solid var(--accent2);padding:14px 18px;margin-bottom:24px;font-size:0.85rem;line-height:1.7;color:var(--text-muted)}
 .results-stats{display:flex;gap:24px;margin-bottom:24px}
 .stat-item{text-align:center}
 .stat-val{font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--accent);line-height:1}
 .stat-lbl{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-top:4px}
+
+/* THEME CARDS */
 .theme-card{border:1px solid var(--border);margin-bottom:16px;background:var(--surface);overflow:hidden;transition:border-color 0.15s}
 .theme-card:hover{border-color:var(--border2)}
 .theme-card.highlighted{border-color:var(--accent)}
@@ -213,10 +188,14 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .theme-chevron.open{transform:rotate(180deg)}
 .theme-body{display:none;border-top:1px solid var(--border);padding:0 20px 20px}
 .theme-body.open{display:block}
+
+/* SUBTHEMES */
 .subtheme{margin-top:16px;padding-left:16px;border-left:2px solid var(--accent2)}
 .sub-name{font-family:var(--font-mono);font-size:0.72rem;font-weight:500;color:var(--accent2);margin-bottom:4px}
 .sub-id{font-size:0.58rem;color:var(--text-dim);margin-right:6px}
 .sub-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px}
+
+/* CODES */
 .code-block{background:var(--surface2);border:1px solid var(--border);padding:10px 14px;margin-bottom:8px;cursor:pointer;transition:border-color 0.15s}
 .code-block:hover{border-color:var(--accent3)}
 .code-block.open{border-color:var(--accent3)}
@@ -231,6 +210,8 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .excerpt-rel{font-size:0.7rem;color:var(--text-dim);line-height:1.5}
 .excerpts-toggle{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim);letter-spacing:0.08em;padding-left:36px;margin-top:2px}
 .excerpts-toggle:hover{color:var(--accent3)}
+
+/* MEMO */
 .memo-card{border:1px solid var(--border);border-left:3px solid var(--accent);padding:16px 20px;margin-top:24px;background:var(--surface)}
 .memo-lbl{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
 .memo-text{font-size:0.82rem;color:var(--text-muted);line-height:1.7}
@@ -246,11 +227,13 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 #rs-list{flex:1;overflow-y:auto;padding:8px}
 .rs-item{padding:10px 12px;border:1px solid transparent;margin-bottom:2px;cursor:pointer;transition:all 0.12s}
 .rs-item:hover{background:var(--surface);border-color:var(--border)}
+.rs-item.active{background:var(--surface);border-color:var(--accent)}
 .rs-item-theme{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim);margin-bottom:3px}
 .rs-item-name{font-size:0.78rem;color:var(--text);margin-bottom:4px}
 .rs-item-excerpt{font-size:0.7rem;color:var(--text-muted);line-height:1.5;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rs-item-source{font-family:var(--font-mono);font-size:0.58rem;color:var(--text-dim);margin-top:4px}
 
-/* NOTES */
+/* NOTES TAB */
 #tab-notes{flex:1;overflow-y:auto;padding:24px;display:none;flex-direction:column;gap:16px}
 #tab-notes.active{display:flex}
 #notes-area{flex:1;min-height:300px;resize:none;font-family:var(--font-body);font-size:0.85rem;font-weight:300;line-height:1.8;padding:16px}
@@ -261,7 +244,7 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .export-bar{padding:12px 24px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;background:var(--sidebar-bg)}
 
 /* LOADING */
-#loading-overlay{display:none;position:fixed;inset:0;background:rgba(13,14,15,0.92);z-index:1000;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+#loading-overlay{display:none;position:fixed;inset:0;background:rgba(13,14,15,0.9);z-index:1000;align-items:center;justify-content:center;flex-direction:column;gap:20px}
 #loading-overlay.visible{display:flex}
 .spinner{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -271,7 +254,7 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .lstep.active{color:var(--accent)}
 
 /* MODALS */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;align-items:center;justify-content:center}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center}
 .modal-overlay.visible{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border);padding:28px;width:480px;max-width:90vw;max-height:90vh;overflow-y:auto}
 .modal-title{font-family:var(--font-display);font-size:1.2rem;font-weight:600;margin-bottom:20px;color:var(--text)}
@@ -279,126 +262,68 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 .form-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;display:block}
 textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body);font-size:0.82rem}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
-.btn-cancel{font-family:var(--font-mono);font-size:0.65rem;background:none;border:1px solid var(--border);color:var(--text-muted);padding:8px 16px;cursor:pointer}
+.btn-cancel{font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;background:none;border:1px solid var(--border);color:var(--text-muted);padding:8px 16px;cursor:pointer}
 .btn-cancel:hover{border-color:var(--accent3);color:var(--accent3)}
-.btn-confirm{font-family:var(--font-mono);font-size:0.65rem;background:var(--accent);color:#111;border:none;padding:8px 20px;cursor:pointer;font-weight:500}
+.btn-confirm{font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;background:var(--accent);color:#111;border:none;padding:8px 20px;cursor:pointer;font-weight:500}
 .btn-confirm:hover{background:#f0d060}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.fade-up{animation:fadeUp 0.3s ease forwards}
+/* ERROR */
+.err-msg{background:rgba(232,71,120,0.08);border:1px solid rgba(232,71,120,0.25);border-left:3px solid var(--accent3);padding:10px 14px;font-family:var(--font-mono);font-size:0.72rem;color:var(--accent3);margin-top:12px;display:none;line-height:1.6}
+.err-msg.visible{display:block}
 
+/* SCROLLBAR */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border)}
 ::-webkit-scrollbar-thumb:hover{background:var(--border2)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp 0.3s ease forwards}
 </style>
 </head>
 <body>
 
-<!-- ── AUTH SCREEN ── -->
-<div id="auth-screen" style="display:flex;flex:1">
-  <div class="auth-card">
-    <div class="auth-logo">Theme<span>Lens</span></div>
-    <div class="auth-tagline">Qualitative Analysis · Powered by AI</div>
-
-    <div class="auth-step">
-      <div class="auth-step-num">What is ThemeLens?</div>
-      <div class="auth-step-title">A lite qualitative research tool</div>
-      <div class="auth-step-desc">Perform Thematic Analysis, Content Analysis, and Narrative Analysis on your research data. Projects are saved to the cloud — access them from any device.</div>
-    </div>
-
-    <div class="auth-step">
-      <div class="auth-step-num">How does it work?</div>
-      <div class="auth-step-title">Sign in → Add your Gemini key → Analyse</div>
-      <div class="auth-step-desc">ThemeLens uses Google's <a href="https://aistudio.google.com" target="_blank">Gemini API</a> to run analyses. You'll need a free API key (takes 2 minutes to get). Your key is stored securely in your account — enter it once, use it forever.</div>
-    </div>
-
-    <hr class="auth-divider">
-
-    <button class="btn-google" onclick="signInWithGoogle()">
-      <svg class="google-icon" viewBox="0 0 24 24">
-        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-      </svg>
-      Continue with Google
-    </button>
-    <div class="auth-note">Your research data is private. Row-level security ensures only you can access your projects.</div>
-  </div>
-</div>
-
-<!-- ── ONBOARDING (API KEY) ── -->
-<div id="onboarding-screen">
-  <div class="onboard-card">
-    <div class="auth-logo" style="margin-bottom:6px">Theme<span style="color:var(--accent)">Lens</span></div>
-    <div class="onboard-title" style="margin-top:20px">One last step</div>
-    <div class="onboard-sub">ThemeLens needs a free Gemini API key to run analyses. You only do this once.</div>
-    <div class="onboard-steps">
-      <div class="onboard-step">
-        <div class="onboard-step-num">1</div>
-        <div class="onboard-step-content">
-          <div class="onboard-step-title">Go to Google AI Studio</div>
-          <div class="onboard-step-desc">Visit <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> — you're already signed in with your Google account.</div>
-        </div>
-      </div>
-      <div class="onboard-step">
-        <div class="onboard-step-num">2</div>
-        <div class="onboard-step-content">
-          <div class="onboard-step-title">Click "Get API Key"</div>
-          <div class="onboard-step-desc">Click the button in the top-left corner. Then click "Create API key". Copy the key that appears.</div>
-        </div>
-      </div>
-      <div class="onboard-step">
-        <div class="onboard-step-num">3</div>
-        <div class="onboard-step-content">
-          <div class="onboard-step-title">Paste it below</div>
-          <div class="onboard-step-desc">Your key is stored securely in your account. It's used only to call the Gemini API on your behalf.</div>
-        </div>
-      </div>
-    </div>
-    <div class="onboard-input-row">
-      <input type="password" id="onboard-key-input" placeholder="AIza...">
-      <button class="btn-primary" onclick="saveOnboardKey()">Save & Enter</button>
-    </div>
-    <div class="err-msg" id="onboard-err"></div>
-  </div>
-</div>
-
-<!-- ── TOPBAR ── -->
+<!-- TOPBAR -->
 <div id="topbar">
   <div class="logo-mark">Theme<span>Lens</span></div>
   <div class="topbar-sep"></div>
   <button class="topbar-btn primary" onclick="openNewProject()">+ New Project</button>
-  <div id="user-info">
-    <div id="api-indicator" onclick="openApiModal()" title="Change API key">
-      <div id="api-dot"></div>
-      <span id="api-indicator-text">Gemini ready</span>
-    </div>
-    <span id="user-email"></span>
-    <button class="btn-signout" onclick="signOut()">Sign out</button>
+  <button class="topbar-btn" onclick="openApiModal()">API Key</button>
+  <div id="apiStatus" onclick="openApiModal()">
+    <div id="apiDot"></div>
+    <span id="apiStatusText">No API key</span>
   </div>
 </div>
 
-<!-- ── APP ── -->
+<!-- APP -->
 <div id="app">
+
+  <!-- SIDEBAR -->
   <div id="sidebar">
     <div id="sidebar-header">
       <span class="sidebar-title">Projects</span>
-      <button class="icon-btn" onclick="openNewProject()">+</button>
+      <button class="icon-btn" onclick="openNewProject()" title="New project">+</button>
     </div>
     <div id="projects-list">
       <div class="empty-state" id="empty-projects">No projects yet.<br>Create one to begin.</div>
     </div>
   </div>
 
+  <!-- MAIN -->
   <div id="main">
+
+    <!-- WELCOME -->
     <div id="welcome">
-      <div class="welcome-title">Welcome to ThemeLens</div>
-      <div class="welcome-sub">Create a project to begin your qualitative analysis.</div>
-      <button class="topbar-btn primary" style="margin-top:8px" onclick="openNewProject()">+ Create your first project</button>
+      <div class="welcome-title">Qualitative Analysis,<br>simplified.</div>
+      <div class="welcome-sub">Thematic Analysis · Content Analysis · Narrative Analysis<br>Powered by Gemini AI · Your data stays local</div>
+      <div class="welcome-actions">
+        <button class="topbar-btn primary" onclick="openNewProject()">+ Create your first project</button>
+        <button class="topbar-btn" onclick="openApiModal()">Configure API Key</button>
+      </div>
     </div>
 
+    <!-- PROJECT VIEW -->
     <div id="project-view">
       <div id="project-topbar">
         <div class="project-title-area">
@@ -411,12 +336,14 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
           <button class="topbar-btn" style="color:var(--accent3);border-color:var(--accent3)" onclick="deleteProject()">Delete</button>
         </div>
       </div>
+
       <div id="proj-tabs">
         <button class="proj-tab active" onclick="switchTab('documents')">Documents</button>
         <button class="proj-tab" onclick="switchTab('analysis')">Analysis</button>
         <button class="proj-tab" onclick="switchTab('results')">Results</button>
         <button class="proj-tab" onclick="switchTab('notes')">Researcher Notes</button>
       </div>
+
       <div id="tab-content">
 
         <!-- DOCUMENTS -->
@@ -425,18 +352,21 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
             <span class="section-label">Documents</span>
             <button class="topbar-btn primary" onclick="openAddDoc()">+ Add Document</button>
           </div>
-          <table class="docs-table" id="docs-table" style="display:none">
-            <thead><tr><th>Title</th><th>Source Type</th><th>Added</th><th>Actions</th></tr></thead>
+          <table class="docs-table" id="docs-table">
+            <thead><tr>
+              <th>Title</th><th>Source Type</th><th>Added</th><th>Actions</th>
+            </tr></thead>
             <tbody id="docs-tbody"></tbody>
           </table>
-          <div id="no-docs" class="empty-state" style="text-align:left;padding:24px 0">No documents yet.</div>
+          <div id="no-docs" class="empty-state" style="text-align:left;padding:24px 0">No documents yet. Add your first document to begin.</div>
         </div>
 
         <!-- ANALYSIS -->
         <div id="tab-analysis">
           <div class="section-label" style="margin-bottom:16px">Select Methodology</div>
-          <div class="method-grid">
-            <div class="method-card selected" data-method="reflexive_ta" onclick="selectMethod(this)">
+
+          <div class="method-grid" id="method-grid">
+            <div class="method-card" data-method="reflexive_ta" onclick="selectMethod(this)">
               <div class="method-tag">Thematic Analysis</div>
               <div class="method-name">Reflexive TA</div>
               <div class="method-desc">Braun & Clarke (2022). Researcher-driven, iterative construction of themes.</div>
@@ -457,7 +387,7 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
             <div class="method-card" data-method="framework_ta" onclick="selectMethod(this)">
               <div class="method-tag">Thematic Analysis</div>
               <div class="method-name">Framework Analysis</div>
-              <div class="method-desc">Structured, matrix-based approach common in applied/policy research.</div>
+              <div class="method-desc">Structured, matrix-based approach. Common in applied/policy research.</div>
               <div class="method-check">✓ Selected</div>
             </div>
             <div class="method-card" data-method="content_analysis" onclick="selectMethod(this)">
@@ -469,11 +399,12 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
             <div class="method-card" data-method="narrative" onclick="selectMethod(this)">
               <div class="method-tag">Narrative Analysis</div>
               <div class="method-name">Narrative Analysis</div>
-              <div class="method-desc">Preserves story structure. Analyses narrative construction and identity.</div>
+              <div class="method-desc">Preserves story structure. Analyses how participants construct their narratives.</div>
               <div class="method-check">✓ Selected</div>
             </div>
           </div>
 
+          <!-- DEDUCTIVE CATEGORIES -->
           <div id="deductive-panel">
             <div class="deductive-header">Predefined Categories / Theoretical Framework</div>
             <div id="categories-list"></div>
@@ -483,10 +414,11 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
             </div>
           </div>
 
+          <!-- OPTIONS -->
           <div class="section-label" style="margin-bottom:12px">Analysis Options</div>
           <div class="options-grid">
             <div class="opt-group">
-              <label class="opt-label">Output Language</label>
+              <label class="opt-label">Language of Output</label>
               <select id="opt-lang">
                 <option value="English">English</option>
                 <option value="European Portuguese">Português</option>
@@ -501,18 +433,27 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
                 <option value="brief">Brief / Overview</option>
               </select>
             </div>
+            <div class="opt-group">
+              <label class="opt-label">Documents to Analyse</label>
+              <select id="opt-docs">
+                <option value="all">All documents</option>
+                <option value="selected">Selected only</option>
+              </select>
+            </div>
           </div>
 
           <div class="err-msg" id="analysis-err"></div>
+
           <div class="run-bar">
             <button class="btn-run" id="run-btn" onclick="runAnalysis()">Run Analysis</button>
-            <div class="run-note">Results are saved to your account<br>and accessible from any device.</div>
+            <div class="run-note">Analysis runs against Gemini API.<br>Results are saved locally to this project.</div>
           </div>
 
+          <!-- RUNS HISTORY -->
           <div class="runs-section">
             <div class="section-label" style="margin-bottom:12px">Analysis Runs</div>
             <div id="runs-list"></div>
-            <div id="no-runs" class="empty-state" style="text-align:left;padding:12px 0">No runs yet.</div>
+            <div id="no-runs" class="empty-state" style="text-align:left;padding:12px 0">No analysis runs yet.</div>
           </div>
         </div>
 
@@ -539,7 +480,7 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
         <!-- NOTES -->
         <div id="tab-notes">
           <div class="section-label">Researcher Notes & Reflexive Memo</div>
-          <textarea id="notes-area" placeholder="Record your reflexive memos, analytical decisions, and observations here..."></textarea>
+          <textarea id="notes-area" placeholder="Record your reflexive memos, analytical decisions, positionality notes, and observations here...&#10;&#10;This space is yours — think of it as your methodological diary."></textarea>
           <div class="notes-footer">
             <span class="notes-saved" id="notes-saved"></span>
             <button class="topbar-btn" onclick="saveNotes()">Save Notes</button>
@@ -548,11 +489,13 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
 
       </div><!-- /tab-content -->
 
+      <!-- EXPORT BAR -->
       <div class="export-bar" id="export-bar" style="display:none">
         <button class="topbar-btn" onclick="exportTXT()">Export TXT</button>
         <button class="topbar-btn" onclick="exportCSV()">Export CSV</button>
         <button class="topbar-btn" onclick="exportJSON()">Export JSON</button>
       </div>
+
     </div><!-- /project-view -->
   </div><!-- /main -->
 </div><!-- /app -->
@@ -560,7 +503,7 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
 <!-- LOADING -->
 <div id="loading-overlay">
   <div class="spinner"></div>
-  <div class="loading-msg" id="loading-msg">Running analysis...</div>
+  <div class="loading-msg">Running analysis...</div>
   <div class="loading-steps">
     <div class="lstep" id="ls1">↳ Familiarisation with data</div>
     <div class="lstep" id="ls2">↳ Initial code generation</div>
@@ -570,13 +513,22 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
   </div>
 </div>
 
-<!-- MODAL: PROJECT -->
+<!-- MODAL: NEW/EDIT PROJECT -->
 <div class="modal-overlay" id="modal-project">
   <div class="modal">
     <div class="modal-title" id="modal-project-title">New Project</div>
-    <div class="form-row"><label class="form-label">Project Title *</label><input type="text" id="proj-title-input" placeholder="e.g. Refugee Experience Study"></div>
-    <div class="form-row"><label class="form-label">Description</label><textarea class="form-input" id="proj-desc-input" placeholder="Brief description..."></textarea></div>
-    <div class="form-row"><label class="form-label">Research Question (optional)</label><input type="text" id="proj-rq-input" placeholder="What is your main research question?"></div>
+    <div class="form-row">
+      <label class="form-label">Project Title *</label>
+      <input type="text" id="proj-title-input" placeholder="e.g. Refugee Experience Study">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Description</label>
+      <textarea class="form-input" id="proj-desc-input" placeholder="Brief description of your study..."></textarea>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Research Question (optional)</label>
+      <input type="text" id="proj-rq-input" placeholder="What is your main research question?">
+    </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-project')">Cancel</button>
       <button class="btn-confirm" onclick="saveProject()">Save Project</button>
@@ -588,16 +540,30 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
 <div class="modal-overlay" id="modal-doc">
   <div class="modal">
     <div class="modal-title">Add Document</div>
-    <div class="form-row"><label class="form-label">Title *</label><input type="text" id="doc-title-input" placeholder="e.g. Interview P01 - Maria Chen"></div>
-    <div class="form-row"><label class="form-label">Source Type</label>
+    <div class="form-row">
+      <label class="form-label">Document Title *</label>
+      <input type="text" id="doc-title-input" placeholder="e.g. Interview P01 - Maria Chen">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Source Type</label>
       <select id="doc-source-input">
-        <option>Interview Transcript</option><option>Focus Group Transcript</option>
-        <option>Field Notes</option><option>Open-ended Survey Responses</option>
-        <option>Document / Archival Text</option><option>Diary / Journal Entry</option><option>Other</option>
+        <option>Interview Transcript</option>
+        <option>Focus Group Transcript</option>
+        <option>Field Notes</option>
+        <option>Open-ended Survey Responses</option>
+        <option>Document / Archival Text</option>
+        <option>Diary / Journal Entry</option>
+        <option>Other</option>
       </select>
     </div>
-    <div class="form-row"><label class="form-label">Text Content *</label><textarea class="form-input" id="doc-text-input" style="min-height:160px" placeholder="Paste your qualitative data here..."></textarea></div>
-    <div style="margin-bottom:14px"><label class="form-label" style="display:block;margin-bottom:6px">Or upload .txt / .md file</label><input type="file" id="doc-file-input" accept=".txt,.md" onchange="readDocFile(event)" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted)"></div>
+    <div class="form-row">
+      <label class="form-label">Text Content *</label>
+      <textarea class="form-input" id="doc-text-input" style="min-height:160px" placeholder="Paste your qualitative data here..."></textarea>
+    </div>
+    <div style="margin-bottom:14px">
+      <label class="form-label" style="display:block;margin-bottom:6px">Or upload .txt / .md file</label>
+      <input type="file" id="doc-file-input" accept=".txt,.md" onchange="readDocFile(event)" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted)">
+    </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-doc')">Cancel</button>
       <button class="btn-confirm" onclick="saveDoc()">Add Document</button>
@@ -608,9 +574,16 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
 <!-- MODAL: API KEY -->
 <div class="modal-overlay" id="modal-api">
   <div class="modal">
-    <div class="modal-title">Update Gemini API Key</div>
-    <div class="form-row"><label class="form-label">API Key</label><input type="password" id="api-key-input" placeholder="AIza..."></div>
-    <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text-dim);line-height:1.8;margin-bottom:16px">Get a free key at <span style="color:var(--accent2)">aistudio.google.com</span> → Get API Key.</div>
+    <div class="modal-title">Gemini API Key</div>
+    <div class="form-row">
+      <label class="form-label">API Key</label>
+      <input type="password" id="api-key-input" placeholder="AIza...">
+    </div>
+    <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text-dim);line-height:1.8;margin-bottom:16px">
+      Get a free key at <span style="color:var(--accent2)">aistudio.google.com</span> → Get API Key.<br>
+      Your key is stored only in your browser's localStorage.<br>
+      It never leaves your device.
+    </div>
     <div class="err-msg" id="api-err"></div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-api')">Cancel</button>
@@ -624,179 +597,92 @@ textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-body)
   <div class="modal" style="width:640px;max-width:95vw">
     <div class="modal-title" id="view-doc-title"></div>
     <div style="font-family:var(--font-body);font-size:0.82rem;line-height:1.8;color:var(--text-muted);max-height:400px;overflow-y:auto;white-space:pre-wrap;border:1px solid var(--border);padding:14px;background:var(--bg)" id="view-doc-text"></div>
-    <div class="modal-actions"><button class="btn-confirm" onclick="closeModal('modal-view-doc')">Close</button></div>
+    <div class="modal-actions">
+      <button class="btn-confirm" onclick="closeModal('modal-view-doc')">Close</button>
+    </div>
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════
-// SUPABASE INIT
-// ═══════════════════════════════════════
-const SUPABASE_URL = 'https://jzexnyzmvfuyzygfhtcr.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_XBA_1TaMR1RkPBw0mW8vOg_zshuICBw';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
-    flowType: 'implicit'
-  }
-});
-
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════
-let currentUser = null;
-let currentProjectId = null;
-let editingProjectId = null;
-let selectedMethod = 'reflexive_ta';
-let categories = [];
-let currentRunId = null;
-let rsFilter = 'all';
-let projects = [];
-let documents = [];
-let runs = [];
-let notesTimer = null;
-let appInitialized = false;
+// ═══════════════════════════════════════════
+let state = {
+  projects: [],
+  currentProjectId: null,
+  editingProjectId: null,
+  selectedMethod: 'reflexive_ta',
+  categories: [],
+  currentRunId: null,
+  rsFilter: 'all'
+};
 
-// ═══════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════
-async function initApp() {
-  // Show loading state immediately
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('onboarding-screen').style.display = 'none';
-  document.getElementById('topbar').style.display = 'none';
-  document.getElementById('app').style.display = 'none';
+const STORAGE_KEY = 'themelens_v2';
 
-  // Get current session
-  const { data: { session } } = await sb.auth.getSession();
-
-  if (session?.user) {
-    currentUser = session.user;
-    const { data: profile } = await sb.from('profiles').select('gemini_key').eq('id', currentUser.id).single();
-    if (!profile?.gemini_key) {
-      showOnboarding();
-    } else {
-      await showApp();
-    }
-  } else {
-    showAuth();
-  }
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) state = { ...state, ...JSON.parse(saved) };
+  } catch(e) {}
 }
 
-sb.auth.onAuthStateChange(async (event, session) => {
-  if (appInitialized) return; // prevent double-init
-  if (event === 'SIGNED_IN' && session?.user) {
-    appInitialized = true;
-    currentUser = session.user;
-    // Clean up URL hash
-    if (window.location.hash.includes('access_token')) {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-    const { data: profile } = await sb.from('profiles').select('gemini_key').eq('id', currentUser.id).single();
-    if (!profile?.gemini_key) {
-      showOnboarding();
-    } else {
-      await showApp();
-    }
-  } else if (event === 'SIGNED_OUT') {
-    appInitialized = false;
-    currentUser = null;
-    showAuth();
-  }
-});
-
-window.addEventListener('load', initApp);
-
-async function signInWithGoogle() {
-  const { error } = await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
-  });
-  if (error) alert('Sign in failed: ' + error.message);
+function saveState() {
+  const toSave = { projects: state.projects };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
 }
 
-async function signOut() {
-  await sb.auth.signOut();
-  showAuth();
+function getProject() {
+  return state.projects.find(p => p.id === state.currentProjectId);
 }
 
-function showAuth() {
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('auth-screen').style.flex = '1';
-  document.getElementById('onboarding-screen').style.display = 'none';
-  document.getElementById('topbar').style.display = 'none';
-  document.getElementById('app').style.display = 'none';
+function getApiKey() {
+  return localStorage.getItem('tl_gemini_key') || '';
 }
 
-function showOnboarding() {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('onboarding-screen').style.display = 'flex';
-  document.getElementById('onboarding-screen').style.flex = '1';
-  document.getElementById('topbar').style.display = 'none';
-  document.getElementById('app').style.display = 'none';
-}
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+window.onload = () => {
+  loadState();
+  renderSidebar();
+  updateApiStatus();
+  const key = document.getElementById('api-key-input');
+  const saved = getApiKey();
+  if (saved) key.value = saved;
+};
 
-async function showApp() {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('onboarding-screen').style.display = 'none';
-  document.getElementById('topbar').style.display = 'flex';
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('app').style.flex = '1';
-  document.getElementById('user-email').textContent = currentUser.email;
-  await loadProjects();
-}
+// ═══════════════════════════════════════════
+// API KEY
+// ═══════════════════════════════════════════
+function openApiModal() { openModal('modal-api'); }
 
-// ═══════════════════════════════════════
-// ONBOARDING API KEY
-// ═══════════════════════════════════════
-async function saveOnboardKey() {
-  const key = document.getElementById('onboard-key-input').value.trim();
-  if (!key) return showErr('onboard-err', 'Please enter your API key.');
-  if (!key.startsWith('AI')) return showErr('onboard-err', 'Key should start with "AI". Check aistudio.google.com.');
-  showLoading('Saving your key...');
-  const { error } = await sb.from('profiles').update({ gemini_key: key }).eq('id', currentUser.id);
-  hideLoading();
-  if (error) return showErr('onboard-err', 'Failed to save key: ' + error.message);
-  showApp();
-}
-
-// ═══════════════════════════════════════
-// API KEY MODAL
-// ═══════════════════════════════════════
-async function openApiModal() {
-  const { data: profile } = await sb.from('profiles').select('gemini_key').eq('id', currentUser.id).single();
-  document.getElementById('api-key-input').value = profile?.gemini_key || '';
-  openModal('modal-api');
-}
-
-async function saveApiKey() {
+function saveApiKey() {
   const key = document.getElementById('api-key-input').value.trim();
-  if (!key || !key.startsWith('AI')) return showErr('api-err', 'Invalid key. Should start with "AI".');
-  const { error } = await sb.from('profiles').update({ gemini_key: key }).eq('id', currentUser.id);
-  if (error) return showErr('api-err', 'Failed to save: ' + error.message);
+  if (!key) return showErr('api-err', 'Please enter your API key.');
+  if (!key.startsWith('AI')) return showErr('api-err', 'Key should start with "AI". Check aistudio.google.com.');
+  localStorage.setItem('tl_gemini_key', key);
+  updateApiStatus();
   closeModal('modal-api');
 }
 
-async function getApiKey() {
-  const { data: profile } = await sb.from('profiles').select('gemini_key').eq('id', currentUser.id).single();
-  return profile?.gemini_key || '';
+function updateApiStatus() {
+  const key = getApiKey();
+  const dot = document.getElementById('apiDot');
+  const txt = document.getElementById('apiStatusText');
+  if (key) {
+    dot.className = 'ok';
+    txt.textContent = 'API key configured';
+  } else {
+    dot.className = '';
+    txt.textContent = 'No API key';
+  }
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // PROJECTS
-// ═══════════════════════════════════════
-async function loadProjects() {
-  showLoading('Loading projects...');
-  const { data } = await sb.from('projects').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
-  hideLoading();
-  projects = data || [];
-  renderSidebar();
-}
-
+// ═══════════════════════════════════════════
 function openNewProject() {
-  editingProjectId = null;
+  state.editingProjectId = null;
   document.getElementById('modal-project-title').textContent = 'New Project';
   document.getElementById('proj-title-input').value = '';
   document.getElementById('proj-desc-input').value = '';
@@ -805,54 +691,67 @@ function openNewProject() {
 }
 
 function editProject() {
-  const p = projects.find(p => p.id === currentProjectId);
+  const p = getProject();
   if (!p) return;
-  editingProjectId = p.id;
+  state.editingProjectId = p.id;
   document.getElementById('modal-project-title').textContent = 'Edit Project';
   document.getElementById('proj-title-input').value = p.title;
   document.getElementById('proj-desc-input').value = p.description || '';
-  document.getElementById('proj-rq-input').value = p.research_question || '';
+  document.getElementById('proj-rq-input').value = p.researchQuestion || '';
   openModal('modal-project');
 }
 
-async function saveProject() {
+function saveProject() {
   const title = document.getElementById('proj-title-input').value.trim();
-  if (!title) return alert('Title is required.');
-  const data = {
-    title,
-    description: document.getElementById('proj-desc-input').value.trim(),
-    research_question: document.getElementById('proj-rq-input').value.trim(),
-    updated_at: new Date().toISOString()
-  };
-  showLoading('Saving project...');
-  if (editingProjectId) {
-    await sb.from('projects').update(data).eq('id', editingProjectId);
+  if (!title) return alert('Project title is required.');
+
+  if (state.editingProjectId) {
+    const p = state.projects.find(p => p.id === state.editingProjectId);
+    if (p) {
+      p.title = title;
+      p.description = document.getElementById('proj-desc-input').value.trim();
+      p.researchQuestion = document.getElementById('proj-rq-input').value.trim();
+    }
   } else {
-    const { data: newProj } = await sb.from('projects').insert({ ...data, user_id: currentUser.id, status: 'active' }).select().single();
-    if (newProj) { currentProjectId = newProj.id; }
+    const proj = {
+      id: 'proj_' + Date.now(),
+      title,
+      description: document.getElementById('proj-desc-input').value.trim(),
+      researchQuestion: document.getElementById('proj-rq-input').value.trim(),
+      status: 'active',
+      created: new Date().toISOString(),
+      documents: [],
+      runs: [],
+      notes: ''
+    };
+    state.projects.unshift(proj);
+    state.currentProjectId = proj.id;
   }
-  await loadProjects();
-  hideLoading();
+
+  saveState();
+  renderSidebar();
   closeModal('modal-project');
-  if (currentProjectId) openProjectView();
+  if (!state.editingProjectId) openProjectView();
+  else renderProjectHeader();
 }
 
-async function archiveProject() {
-  const p = projects.find(p => p.id === currentProjectId);
+function archiveProject() {
+  const p = getProject();
   if (!p) return;
-  const newStatus = p.status === 'archived' ? 'active' : 'archived';
-  await sb.from('projects').update({ status: newStatus }).eq('id', currentProjectId);
-  await loadProjects();
+  p.status = p.status === 'archived' ? 'active' : 'archived';
+  saveState();
+  renderSidebar();
   renderProjectHeader();
 }
 
-async function deleteProject() {
-  if (!confirm('Delete this project and all its data? This cannot be undone.')) return;
-  showLoading('Deleting...');
-  await sb.from('projects').delete().eq('id', currentProjectId);
-  currentProjectId = null;
-  await loadProjects();
-  hideLoading();
+function deleteProject() {
+  const p = getProject();
+  if (!p) return;
+  if (!confirm(`Delete "${p.title}"? This cannot be undone.`)) return;
+  state.projects = state.projects.filter(pr => pr.id !== p.id);
+  state.currentProjectId = null;
+  saveState();
+  renderSidebar();
   document.getElementById('project-view').style.display = 'none';
   document.getElementById('welcome').style.display = 'flex';
 }
@@ -860,58 +759,74 @@ async function deleteProject() {
 function renderSidebar() {
   const list = document.getElementById('projects-list');
   const empty = document.getElementById('empty-projects');
-  if (!projects.length) { list.innerHTML = ''; list.appendChild(empty); empty.style.display = 'block'; return; }
+  if (!state.projects.length) {
+    empty.style.display = 'block';
+    list.innerHTML = '';
+    list.appendChild(empty);
+    return;
+  }
   empty.style.display = 'none';
   list.innerHTML = '';
-  projects.forEach(p => {
+  state.projects.forEach(p => {
     const el = document.createElement('div');
-    el.className = 'project-item' + (p.id === currentProjectId ? ' active' : '');
-    el.addEventListener("click", async () => { currentProjectId = p.id; renderSidebar(); await openProjectView(); });
-    el.innerHTML = `<div class="proj-name">${escHtml(p.title)}</div><div class="proj-meta"><span class="proj-badge ${p.status}">${p.status}</span><span>${fmtDate(p.created_at)}</span></div>`;
+    el.className = 'project-item' + (p.id === state.currentProjectId ? ' active' : '');
+    el.onclick = () => { state.currentProjectId = p.id; renderSidebar(); openProjectView(); };
+    const docsCount = p.documents?.length || 0;
+    const runsCount = p.runs?.length || 0;
+    el.innerHTML = `
+      <div class="proj-name">${escHtml(p.title)}</div>
+      <div class="proj-meta">
+        <span>${docsCount} doc${docsCount!==1?'s':''}</span>
+        <span>${runsCount} run${runsCount!==1?'s':''}</span>
+        <span class="proj-badge ${p.status}">${p.status}</span>
+      </div>`;
     list.appendChild(el);
   });
 }
 
-async function openProjectView() {
+function openProjectView() {
   document.getElementById('welcome').style.display = 'none';
   document.getElementById('project-view').style.display = 'flex';
   document.getElementById('project-view').style.flexDirection = 'column';
   renderProjectHeader();
-  await switchTab('documents');
+  switchTab('documents');
 }
 
 function renderProjectHeader() {
-  const p = projects.find(p => p.id === currentProjectId);
+  const p = getProject();
   if (!p) return;
   document.getElementById('proj-title').textContent = p.title;
-  document.getElementById('proj-desc').textContent = p.description || (p.research_question ? 'RQ: ' + p.research_question : '');
+  document.getElementById('proj-desc').textContent = p.description || (p.researchQuestion ? 'RQ: ' + p.researchQuestion : '');
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // TABS
-// ═══════════════════════════════════════
-async function switchTab(name) {
-  document.querySelectorAll('.proj-tab').forEach((t, i) => {
-    t.classList.toggle('active', ['documents','analysis','results','notes'][i] === name);
+// ═══════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.proj-tab').forEach((t,i) => {
+    const tabs = ['documents','analysis','results','notes'];
+    t.classList.toggle('active', tabs[i] === name);
   });
   ['documents','analysis','results','notes'].forEach(t => {
-    document.getElementById('tab-' + t).classList.toggle('active', t === name);
+    const el = document.getElementById('tab-' + t);
+    el.classList.toggle('active', t === name);
   });
-  document.getElementById('export-bar').style.display = name === 'results' ? 'flex' : 'none';
-  if (name === 'documents') await renderDocs();
-  if (name === 'analysis') await renderRuns();
-  if (name === 'results') await renderResults();
-  if (name === 'notes') await loadNotes();
+  const exportBar = document.getElementById('export-bar');
+  exportBar.style.display = name === 'results' ? 'flex' : 'none';
+  if (name === 'documents') renderDocs();
+  if (name === 'analysis') renderRuns();
+  if (name === 'results') renderResults();
+  if (name === 'notes') loadNotes();
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // DOCUMENTS
-// ═══════════════════════════════════════
-function openAddDoc() {
+// ═══════════════════════════════════════════
+function openAddDoc() { 
   document.getElementById('doc-title-input').value = '';
   document.getElementById('doc-text-input').value = '';
   document.getElementById('doc-source-input').selectedIndex = 0;
-  openModal('modal-doc');
+  openModal('modal-doc'); 
 }
 
 function readDocFile(e) {
@@ -920,245 +835,337 @@ function readDocFile(e) {
   const reader = new FileReader();
   reader.onload = ev => {
     document.getElementById('doc-text-input').value = ev.target.result;
-    if (!document.getElementById('doc-title-input').value)
-      document.getElementById('doc-title-input').value = file.name.replace(/\.[^.]+$/, '');
+    if (!document.getElementById('doc-title-input').value) {
+      document.getElementById('doc-title-input').value = file.name.replace(/\.[^.]+$/,'');
+    }
   };
   reader.readAsText(file);
 }
 
-async function saveDoc() {
+function saveDoc() {
   const title = document.getElementById('doc-title-input').value.trim();
-  const content = document.getElementById('doc-text-input').value.trim();
-  if (!title || !content) return alert('Title and content are required.');
-  showLoading('Saving document...');
-  await sb.from('documents').insert({
-    project_id: currentProjectId,
+  const text = document.getElementById('doc-text-input').value.trim();
+  if (!title) return alert('Document title is required.');
+  if (!text) return alert('Document text is required.');
+  const p = getProject();
+  if (!p) return;
+  if (!p.documents) p.documents = [];
+  p.documents.push({
+    id: 'doc_' + Date.now(),
     title,
-    source_type: document.getElementById('doc-source-input').value,
-    content
+    source: document.getElementById('doc-source-input').value,
+    text,
+    added: new Date().toISOString()
   });
-  hideLoading();
+  saveState();
+  renderSidebar();
   closeModal('modal-doc');
-  await renderDocs();
+  renderDocs();
 }
 
-async function renderDocs() {
-  const { data } = await sb.from('documents').select('*').eq('project_id', currentProjectId).order('created_at');
-  documents = data || [];
+function renderDocs() {
+  const p = getProject();
+  if (!p) return;
   const tbody = document.getElementById('docs-tbody');
   const noDocs = document.getElementById('no-docs');
   const table = document.getElementById('docs-table');
-  if (!documents.length) { tbody.innerHTML = ''; noDocs.style.display = 'block'; table.style.display = 'none'; return; }
+  const docs = p.documents || [];
+  if (!docs.length) {
+    tbody.innerHTML = '';
+    noDocs.style.display = 'block';
+    table.style.display = 'none';
+    return;
+  }
   noDocs.style.display = 'none';
   table.style.display = 'table';
-  tbody.innerHTML = documents.map(d => `
+  tbody.innerHTML = docs.map(d => `
     <tr>
-      <td>${escHtml(d.title)}</td>
-      <td><span class="doc-source">${escHtml(d.source_type)}</span></td>
-      <td class="doc-date">${fmtDate(d.created_at)}</td>
-      <td><div class="doc-actions">
-        <button class="small-btn" onclick="viewDoc('${d.id}')">View</button>
-        <button class="small-btn danger" onclick="deleteDoc('${d.id}')">Delete</button>
-      </div></td>
+      <td class="doc-name">${escHtml(d.title)}</td>
+      <td><span class="doc-source">${escHtml(d.source)}</span></td>
+      <td class="doc-date">${fmtDate(d.added)}</td>
+      <td>
+        <div class="doc-actions">
+          <button class="small-btn" onclick="viewDoc('${d.id}')">View</button>
+          <button class="small-btn danger" onclick="deleteDoc('${d.id}')">Delete</button>
+        </div>
+      </td>
     </tr>`).join('');
 }
 
 function viewDoc(id) {
-  const doc = documents.find(d => d.id === id);
+  const p = getProject();
+  const doc = p?.documents?.find(d => d.id === id);
   if (!doc) return;
   document.getElementById('view-doc-title').textContent = doc.title;
-  document.getElementById('view-doc-text').textContent = doc.content;
+  document.getElementById('view-doc-text').textContent = doc.text;
   openModal('modal-view-doc');
 }
 
-async function deleteDoc(id) {
+function deleteDoc(id) {
   if (!confirm('Delete this document?')) return;
-  await sb.from('documents').delete().eq('id', id);
-  await renderDocs();
+  const p = getProject();
+  p.documents = p.documents.filter(d => d.id !== id);
+  saveState();
+  renderSidebar();
+  renderDocs();
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // METHODOLOGY
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 function selectMethod(card) {
   document.querySelectorAll('.method-card').forEach(c => c.classList.remove('selected'));
   card.classList.add('selected');
-  selectedMethod = card.dataset.method;
-  document.getElementById('deductive-panel').style.display = selectedMethod === 'deductive_ta' ? 'block' : 'none';
+  state.selectedMethod = card.dataset.method;
+  document.getElementById('deductive-panel').style.display =
+    state.selectedMethod === 'deductive_ta' ? 'block' : 'none';
 }
 
 function addCategory() {
   const input = document.getElementById('catInput');
   const val = input.value.trim();
-  if (!val || categories.includes(val)) return;
-  categories.push(val);
+  if (!val) return;
+  if (!state.categories.includes(val)) state.categories.push(val);
   input.value = '';
   renderCategories();
 }
 
 function removeCategory(cat) {
-  categories = categories.filter(c => c !== cat);
+  state.categories = state.categories.filter(c => c !== cat);
   renderCategories();
 }
 
 function renderCategories() {
-  document.getElementById('categories-list').innerHTML = categories.map(c =>
-    `<span class="category-tag">${escHtml(c)}<button onclick="removeCategory('${escHtml(c)}')">&times;</button></span>`
-  ).join('');
+  document.getElementById('categories-list').innerHTML = state.categories.map(c => `
+    <span class="category-tag">${escHtml(c)}<button onclick="removeCategory('${escHtml(c)}')">&times;</button></span>
+  `).join('');
 }
 
-// ═══════════════════════════════════════
-// ANALYSIS
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
+// ANALYSIS PROMPT BUILDER
+// ═══════════════════════════════════════════
 const METHOD_INFO = {
-  reflexive_ta: { name: 'Reflexive Thematic Analysis (Braun & Clarke, 2022)', instruction: 'Apply reflexive thematic analysis. The researcher plays an active role in theme construction. Be interpretive. Themes should be conceptual patterns of shared meaning, not mere topics.' },
-  inductive_ta: { name: 'Inductive Thematic Analysis (bottom-up)', instruction: 'Let themes emerge entirely from the data without theoretical preconceptions. Codes and themes should be grounded purely in the data.' },
-  deductive_ta: { name: 'Deductive Thematic Analysis (top-down)', instruction: 'Analyse the data using the predefined theoretical categories provided. Map data to these categories and identify how data confirms, extends, or challenges them.' },
-  framework_ta: { name: 'Framework Analysis', instruction: 'Use a structured matrix-based approach. Identify a clear analytical framework and chart the data systematically, noting similarities and differences across cases.' },
-  content_analysis: { name: 'Content Analysis (Bardin, 1977)', instruction: 'Apply systematic content analysis. Identify manifest and latent content. Focus on categorisation and patterns. Be systematic and exhaustive.' },
-  narrative: { name: 'Narrative Analysis', instruction: 'Analyse narrative structure. How do participants construct their stories? Identify plot elements, turning points, and narrative identities.' }
+  reflexive_ta: { name: 'Reflexive Thematic Analysis (Braun & Clarke, 2022)', instruction: 'Apply the reflexive thematic analysis approach. The researcher plays an active role in theme construction. Be interpretive, not just descriptive. Themes should be conceptual patterns of shared meaning, not mere topics.' },
+  inductive_ta: { name: 'Inductive Thematic Analysis (bottom-up)', instruction: 'Let themes emerge entirely from the data without applying any theoretical preconceptions. Do not import external frameworks. Codes and themes should be grounded purely in what the data says.' },
+  deductive_ta: { name: 'Deductive Thematic Analysis (top-down)', instruction: 'Analyse the data using the predefined theoretical categories provided. Map data to these categories, identify how the data confirms, extends, or challenges them. You may identify sub-themes within each category.' },
+  framework_ta: { name: 'Framework Analysis', instruction: 'Use a structured matrix-based approach. Identify a clear analytical framework from the data and chart the data systematically. Particularly note similarities and differences across cases/participants.' },
+  content_analysis: { name: 'Content Analysis (Bardin, 1977)', instruction: 'Apply systematic content analysis. Identify manifest and latent content. Focus on categorisation, frequency of themes, and patterns. Be systematic and exhaustive in coverage.' },
+  narrative: { name: 'Narrative Analysis', instruction: 'Analyse the narrative structure. How do participants construct their stories? Identify plot elements, turning points, narrative identities, and how the past is used to make sense of the present. Preserve narrative integrity.' }
 };
 
-function buildPrompt(text, method, lang, depth) {
+function buildPrompt(text, method, lang, depth, categories) {
   const m = METHOD_INFO[method] || METHOD_INFO.reflexive_ta;
-  const depthNote = depth === 'brief' ? 'Keep analysis concise: 2-3 themes maximum.' : depth === 'detailed' ? 'Be thorough with rich, detailed analysis.' : 'Standard depth.';
-  const catNote = method === 'deductive_ta' && categories.length ? `\nPredefined categories: ${categories.join(', ')}\n` : '';
-  return `You are an expert qualitative researcher applying ${m.name}.\n${m.instruction}\n${depthNote}${catNote}\nRespond ONLY in valid JSON. All text must be in ${lang}.\n\nINPUT DATA:\n"""\n${text}\n"""\n\nReturn this exact JSON:\n{"summary":"...","total_codes":0,"total_themes":0,"themes":[{"theme_id":1,"theme_name":"...","theme_description":"...","subthemes":[{"subtheme_id":"1.1","subtheme_name":"...","subtheme_description":"...","codes":[{"code_id":"1.1.1","code_label":"...","code_description":"...","excerpts":[{"text":"verbatim quote","relevance":"why it supports the code"}]}]}]}],"analytical_memo":"..."}\n\nRules: verbatim excerpts only; each code needs at least one excerpt; themes must be conceptual.`;
+  const depthNote = depth === 'brief' ? 'Keep analysis concise: 2-3 themes maximum.' : depth === 'detailed' ? 'Be thorough and generate rich, detailed analysis with multiple subthemes and codes.' : 'Standard depth: balanced analysis.';
+  const catNote = (method === 'deductive_ta' && categories.length) ? `\nPredefined categories to use as your framework: ${categories.join(', ')}\n` : '';
+
+  return `You are an expert qualitative researcher applying ${m.name}.
+
+${m.instruction}
+${depthNote}
+${catNote}
+Respond ONLY in valid JSON. All text in the JSON must be in ${lang}.
+
+INPUT DATA:
+"""
+${text}
+"""
+
+Return this exact JSON structure:
+{
+  "summary": "Overview of data and analytical focus (2-3 sentences)",
+  "total_codes": <number>,
+  "total_themes": <number>,
+  "themes": [
+    {
+      "theme_id": 1,
+      "theme_name": "Conceptual theme name",
+      "theme_description": "What this theme captures and its significance (2-3 sentences)",
+      "subthemes": [
+        {
+          "subtheme_id": "1.1",
+          "subtheme_name": "Subtheme name",
+          "subtheme_description": "What this subtheme captures",
+          "codes": [
+            {
+              "code_id": "1.1.1",
+              "code_label": "Short descriptive code",
+              "code_description": "What this code captures in the data",
+              "excerpts": [
+                {
+                  "text": "Verbatim quote from input text",
+                  "relevance": "Why this excerpt supports the code"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "analytical_memo": "Reflexive notes on patterns, tensions, analytical decisions, limitations (3-5 sentences)"
 }
 
+Rules: excerpts must be verbatim quotes; each code needs at least one excerpt; themes must be conceptual not merely topical.`;
+}
+
+// ═══════════════════════════════════════════
+// RUN ANALYSIS
+// ═══════════════════════════════════════════
 async function runAnalysis() {
+  const p = getProject();
+  const key = getApiKey();
   const errEl = document.getElementById('analysis-err');
   errEl.classList.remove('visible');
-  if (!documents.length) return showErr('analysis-err', 'No documents found. Add documents first.');
-  const key = await getApiKey();
-  if (!key) return showErr('analysis-err', 'No API key found. Click the API indicator in the top bar.');
-  const combinedText = documents.map(d => `[${d.title}]\n${d.content}`).join('\n\n---\n\n');
+
+  if (!key) return showErr('analysis-err', 'No API key configured. Click "API Key" in the top bar.');
+  if (!p?.documents?.length) return showErr('analysis-err', 'No documents found. Add documents first in the Documents tab.');
+
   const lang = document.getElementById('opt-lang').value;
   const depth = document.getElementById('opt-depth').value;
-  const prompt = buildPrompt(combinedText, selectedMethod, lang, depth);
+  const combinedText = p.documents.map(d => `[${d.title}]\n${d.text}`).join('\n\n---\n\n');
 
-  showLoading('Running analysis...');
+  if (combinedText.length < 50) return showErr('analysis-err', 'Documents appear to be empty.');
+
+  const prompt = buildPrompt(combinedText, state.selectedMethod, lang, depth, state.categories);
+
+  // Show loading
+  document.getElementById('loading-overlay').classList.add('visible');
   document.getElementById('run-btn').disabled = true;
   const steps = ['ls1','ls2','ls3','ls4','ls5'];
   let si = 0;
-  const stepInt = setInterval(() => { if (si < steps.length) document.getElementById(steps[si++]).classList.add('active'); }, 1400);
+  const stepInt = setInterval(() => {
+    if (si < steps.length) document.getElementById(steps[si++]).classList.add('active');
+  }, 1400);
 
   try {
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.3, maxOutputTokens: 8192 } })
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.3, maxOutputTokens: 8192 }
+      })
     });
+
     clearInterval(stepInt);
     steps.forEach(s => document.getElementById(s).classList.remove('active'));
-    hideLoading();
+    document.getElementById('loading-overlay').classList.remove('visible');
     document.getElementById('run-btn').disabled = false;
 
     if (!res.ok) {
       const err = await res.json();
-      let msg = err.error?.message || `HTTP ${res.status}`;
-      if (res.status === 400 || msg.includes('API_KEY')) msg = 'Invalid API key. Update it via the API indicator in the top bar.';
-      if (res.status === 429) msg = 'Rate limit reached. Wait a moment and try again.';
-      return showErr('analysis-err', msg);
+      const msg = err.error?.message || `HTTP ${res.status}`;
+      if (msg.includes('API_KEY') || res.status === 400) throw new Error('Invalid API key. Check aistudio.google.com.');
+      if (res.status === 429) throw new Error('Rate limit reached. Wait a moment and try again.');
+      throw new Error(msg);
     }
 
     const data = await res.json();
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!raw) return showErr('analysis-err', 'Empty response from API. Try again.');
+    if (!raw) throw new Error('Empty response from API.');
+
     const clean = raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
     const analysis = JSON.parse(clean);
-    const m = METHOD_INFO[selectedMethod];
 
-    showLoading('Saving results...');
-    const { data: run } = await sb.from('analysis_runs').insert({
-      project_id: currentProjectId,
-      method: m.name,
-      method_key: selectedMethod,
+    const methodName = METHOD_INFO[state.selectedMethod]?.name || state.selectedMethod;
+    const run = {
+      id: 'run_' + Date.now(),
+      method: methodName,
+      methodKey: state.selectedMethod,
       language: lang,
       depth,
-      categories: categories,
-      docs_count: documents.length,
+      docsCount: p.documents.length,
+      categories: [...state.categories],
+      timestamp: new Date().toISOString(),
       status: 'complete',
-      result: analysis
-    }).select().single();
+      analysis
+    };
 
-    hideLoading();
-    if (run) currentRunId = run.id;
-    await renderRuns();
-    await switchTab('results');
+    if (!p.runs) p.runs = [];
+    p.runs.unshift(run);
+    state.currentRunId = run.id;
+    saveState();
+    renderSidebar();
+    renderRuns();
+    switchTab('results');
 
   } catch(err) {
     clearInterval(stepInt);
     steps.forEach(s => document.getElementById(s).classList.remove('active'));
-    hideLoading();
+    document.getElementById('loading-overlay').classList.remove('visible');
     document.getElementById('run-btn').disabled = false;
-    showErr('analysis-err', err.message.includes('JSON') ? 'Failed to parse AI response. Try again.' : err.message);
+
+    let msg = err.message;
+    if (msg.includes('JSON')) msg = 'Failed to parse AI response. Try again — may be temporary.';
+    showErr('analysis-err', msg);
   }
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // RUNS
-// ═══════════════════════════════════════
-async function renderRuns() {
-  const { data } = await sb.from('analysis_runs').select('id,method,language,depth,docs_count,status,created_at').eq('project_id', currentProjectId).order('created_at', { ascending: false });
-  runs = data || [];
+// ═══════════════════════════════════════════
+function renderRuns() {
+  const p = getProject();
   const list = document.getElementById('runs-list');
   const noRuns = document.getElementById('no-runs');
+  const runs = p?.runs || [];
   if (!runs.length) { list.innerHTML = ''; noRuns.style.display = 'block'; return; }
   noRuns.style.display = 'none';
-  list.innerHTML = runs.map((r, i) => `
-    <div class="run-item ${r.id === currentRunId ? 'selected-run' : ''}" onclick="selectRun('${r.id}')">
+  list.innerHTML = runs.map((r,i) => `
+    <div class="run-item ${r.id === state.currentRunId ? 'selected-run' : ''}" onclick="selectRun('${r.id}')">
       <div class="run-number">Run #${runs.length - i}</div>
       <div class="run-info">
         <div class="run-method">${escHtml(r.method)}</div>
-        <div class="run-meta">${fmtDate(r.created_at)} · ${r.docs_count} doc(s) · ${r.language}</div>
+        <div class="run-meta">${fmtDate(r.timestamp)} · ${r.docsCount} doc(s) · ${r.language}</div>
       </div>
-      <span class="run-status complete">complete</span>
+      <span class="run-status ${r.status}">${r.status}</span>
       <div class="run-actions">
-        <button class="small-btn" onclick="event.stopPropagation();selectRun('${r.id}');switchTab('results')">View</button>
+        <button class="small-btn" onclick="event.stopPropagation();viewRun('${r.id}')">View</button>
         <button class="small-btn danger" onclick="event.stopPropagation();deleteRun('${r.id}')">Del</button>
       </div>
     </div>`).join('');
 }
 
-async function selectRun(id) {
-  currentRunId = id;
-  await renderRuns();
-  await switchTab('results');
+function selectRun(id) {
+  state.currentRunId = id;
+  renderRuns();
+  switchTab('results');
 }
 
-async function deleteRun(id) {
+function viewRun(id) {
+  state.currentRunId = id;
+  switchTab('results');
+}
+
+function deleteRun(id) {
   if (!confirm('Delete this run?')) return;
-  await sb.from('analysis_runs').delete().eq('id', id);
-  if (currentRunId === id) currentRunId = null;
-  await renderRuns();
-  await renderResults();
+  const p = getProject();
+  p.runs = p.runs.filter(r => r.id !== id);
+  if (state.currentRunId === id) state.currentRunId = p.runs[0]?.id || null;
+  saveState();
+  renderRuns();
+  renderResults();
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // RESULTS
-// ═══════════════════════════════════════
-async function renderResults() {
+// ═══════════════════════════════════════════
+function renderResults() {
+  const p = getProject();
   const noResults = document.getElementById('no-results');
   const content = document.getElementById('results-content');
-  let run = null;
-  if (currentRunId) {
-    const { data } = await sb.from('analysis_runs').select('*').eq('id', currentRunId).single();
-    run = data;
-  } else if (runs.length) {
-    const { data } = await sb.from('analysis_runs').select('*').eq('project_id', currentProjectId).order('created_at', { ascending: false }).limit(1).single();
-    run = data;
-    if (run) currentRunId = run.id;
-  }
+  const run = p?.runs?.find(r => r.id === state.currentRunId) || p?.runs?.[0];
   if (!run) { noResults.style.display = 'block'; content.style.display = 'none'; renderRsSidebar(null); return; }
+  state.currentRunId = run.id;
   noResults.style.display = 'none';
   content.style.display = 'block';
-  const a = run.result;
+
+  const a = run.analysis;
   let html = `
     <div class="results-stats fade-up">
       <div class="stat-item"><div class="stat-val">${a.total_themes || a.themes?.length || '—'}</div><div class="stat-lbl">Themes</div></div>
       <div class="stat-item"><div class="stat-val">${a.total_codes || '—'}</div><div class="stat-lbl">Codes</div></div>
-      <div class="stat-item"><div class="stat-val">${run.docs_count}</div><div class="stat-lbl">Documents</div></div>
+      <div class="stat-item"><div class="stat-val">${run.docsCount}</div><div class="stat-lbl">Documents</div></div>
     </div>
     <div class="result-summary fade-up">${escHtml(a.summary)}</div>`;
 
@@ -1170,71 +1177,95 @@ async function renderResults() {
             <div class="excerpt-quote">"${escHtml(ex.text)}"</div>
             <div class="excerpt-rel">${escHtml(ex.relevance)}</div>
           </div>`).join('');
-        return `<div class="code-block" onclick="toggleCode(this)">
-          <div class="code-top"><span class="code-id-lbl">${escHtml(code.code_id)}</span><span class="code-label">${escHtml(code.code_label)}</span></div>
-          <div class="code-desc">${escHtml(code.code_description)}</div>
-          <div class="excerpts-toggle">▸ ${code.excerpts?.length||0} excerpt(s)</div>
-          <div class="excerpts-wrap">${exHtml}</div>
-        </div>`;
+        return `
+          <div class="code-block" onclick="toggleCode(this)">
+            <div class="code-top">
+              <span class="code-id-lbl">${escHtml(code.code_id)}</span>
+              <span class="code-label">${escHtml(code.code_label)}</span>
+            </div>
+            <div class="code-desc">${escHtml(code.code_description)}</div>
+            <div class="excerpts-toggle">▸ ${code.excerpts?.length||0} excerpt(s)</div>
+            <div class="excerpts-wrap">${exHtml}</div>
+          </div>`;
       }).join('');
-      return `<div class="subtheme">
-        <div class="sub-name"><span class="sub-id">${escHtml(sub.subtheme_id)}</span>${escHtml(sub.subtheme_name)}</div>
-        <div class="sub-desc">${escHtml(sub.subtheme_description)}</div>
-        ${codesHtml}
-      </div>`;
+      return `
+        <div class="subtheme">
+          <div class="sub-name"><span class="sub-id">${escHtml(sub.subtheme_id)}</span>${escHtml(sub.subtheme_name)}</div>
+          <div class="sub-desc">${escHtml(sub.subtheme_description)}</div>
+          ${codesHtml}
+        </div>`;
     }).join('');
-    html += `<div class="theme-card fade-up" id="theme-${ti}">
-      <div class="theme-hdr" onclick="toggleTheme(this)">
-        <div class="theme-num">0${ti+1}</div>
-        <div class="theme-info"><div class="theme-name">${escHtml(theme.theme_name)}</div><div class="theme-desc">${escHtml(theme.theme_description)}</div></div>
-        <div class="theme-chevron">▾</div>
-      </div>
-      <div class="theme-body">${subHtml}</div>
-    </div>`;
+
+    html += `
+      <div class="theme-card fade-up" id="theme-${ti}">
+        <div class="theme-hdr" onclick="toggleTheme(this)">
+          <div class="theme-num">0${ti+1}</div>
+          <div class="theme-info">
+            <div class="theme-name">${escHtml(theme.theme_name)}</div>
+            <div class="theme-desc">${escHtml(theme.theme_description)}</div>
+          </div>
+          <div class="theme-chevron">▾</div>
+        </div>
+        <div class="theme-body">${subHtml}</div>
+      </div>`;
   });
 
-  if (a.analytical_memo) html += `<div class="memo-card fade-up"><div class="memo-lbl">Analytical Memo</div><div class="memo-text">${escHtml(a.analytical_memo)}</div></div>`;
+  if (a.analytical_memo) {
+    html += `<div class="memo-card fade-up"><div class="memo-lbl">Analytical Memo</div><div class="memo-text">${escHtml(a.analytical_memo)}</div></div>`;
+  }
+
   content.innerHTML = html;
-  renderRsSidebar(a);
+  renderRsSidebar(run.analysis);
 }
 
 function toggleTheme(hdr) {
-  hdr.nextElementSibling.classList.toggle('open');
-  hdr.querySelector('.theme-chevron').classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  const chev = hdr.querySelector('.theme-chevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
 }
 
 function toggleCode(block) {
   const wrap = block.querySelector('.excerpts-wrap');
+  const toggle = block.querySelector('.excerpts-toggle');
   wrap.classList.toggle('open');
   block.classList.toggle('open');
   const count = block.querySelectorAll('.excerpt-item').length;
-  block.querySelector('.excerpts-toggle').textContent = wrap.classList.contains('open') ? `▾ ${count} excerpt(s)` : `▸ ${count} excerpt(s)`;
+  toggle.textContent = wrap.classList.contains('open') ? `▾ ${count} excerpt(s)` : `▸ ${count} excerpt(s)`;
 }
 
+// ═══════════════════════════════════════════
+// RESULTS SIDEBAR
+// ═══════════════════════════════════════════
 function renderRsSidebar(analysis) {
   const list = document.getElementById('rs-list');
   if (!analysis) { list.innerHTML = ''; return; }
   list.innerHTML = '';
+  const filter = state.rsFilter;
   const search = document.getElementById('rs-search').value.toLowerCase();
+
   (analysis.themes || []).forEach((theme, ti) => {
-    if (rsFilter !== 'codes') {
-      if (!search || theme.theme_name.toLowerCase().includes(search)) {
-        const div = document.createElement('div');
-        div.className = 'rs-item';
-        div.innerHTML = `<div class="rs-item-theme">Theme ${ti+1}</div><div class="rs-item-name">${escHtml(theme.theme_name)}</div>`;
-        div.onclick = () => scrollToTheme(ti);
-        list.appendChild(div);
-      }
+    if (filter !== 'codes') {
+      const div = document.createElement('div');
+      div.className = 'rs-item';
+      div.innerHTML = `<div class="rs-item-theme">Theme ${ti+1}</div><div class="rs-item-name">${escHtml(theme.theme_name)}</div>`;
+      div.onclick = () => scrollToTheme(ti);
+      if (!search || theme.theme_name.toLowerCase().includes(search)) list.appendChild(div);
     }
-    if (rsFilter !== 'themes') {
-      (theme.subthemes || []).forEach(sub => (sub.codes || []).forEach(code => {
-        const ex = code.excerpts?.[0];
-        if (search && !code.code_label.toLowerCase().includes(search) && !ex?.text.toLowerCase().includes(search)) return;
-        const div = document.createElement('div');
-        div.className = 'rs-item';
-        div.innerHTML = `<div class="rs-item-theme">${escHtml(theme.theme_name)}</div><div class="rs-item-name" style="color:var(--accent3)">${escHtml(code.code_label)}</div>${ex?`<div class="rs-item-excerpt">"${escHtml(ex.text)}"</div>`:''}`;
-        list.appendChild(div);
-      }));
+    if (filter !== 'themes') {
+      (theme.subthemes || []).forEach(sub => {
+        (sub.codes || []).forEach(code => {
+          const ex = code.excerpts?.[0];
+          if (search && !code.code_label.toLowerCase().includes(search) && !ex?.text.toLowerCase().includes(search)) return;
+          const div = document.createElement('div');
+          div.className = 'rs-item';
+          div.innerHTML = `
+            <div class="rs-item-theme">${escHtml(theme.theme_name)} › ${escHtml(sub.subtheme_name)}</div>
+            <div class="rs-item-name" style="color:var(--accent3)">${escHtml(code.code_label)}</div>
+            ${ex ? `<div class="rs-item-excerpt">"${escHtml(ex.text)}"</div>` : ''}`;
+          list.appendChild(div);
+        });
+      });
     }
   });
 }
@@ -1242,16 +1273,16 @@ function renderRsSidebar(analysis) {
 function setRsFilter(btn) {
   document.querySelectorAll('.rs-filter').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  rsFilter = btn.dataset.filter;
-  const el = document.getElementById('results-content');
-  if (el.style.display !== 'none') {
-    // re-render sidebar from current run
-    sb.from('analysis_runs').select('result').eq('id', currentRunId).single().then(({ data }) => { if (data) renderRsSidebar(data.result); });
-  }
+  state.rsFilter = btn.dataset.filter;
+  const p = getProject();
+  const run = p?.runs?.find(r => r.id === state.currentRunId);
+  renderRsSidebar(run?.analysis || null);
 }
 
 function filterResults() {
-  sb.from('analysis_runs').select('result').eq('id', currentRunId).single().then(({ data }) => { if (data) renderRsSidebar(data.result); });
+  const p = getProject();
+  const run = p?.runs?.find(r => r.id === state.currentRunId);
+  renderRsSidebar(run?.analysis || null);
 }
 
 function scrollToTheme(idx) {
@@ -1259,44 +1290,45 @@ function scrollToTheme(idx) {
   if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('highlighted'); setTimeout(() => el.classList.remove('highlighted'), 2000); }
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // NOTES
-// ═══════════════════════════════════════
-async function loadNotes() {
-  const p = projects.find(p => p.id === currentProjectId);
+// ═══════════════════════════════════════════
+function loadNotes() {
+  const p = getProject();
   document.getElementById('notes-area').value = p?.notes || '';
   document.getElementById('notes-saved').textContent = '';
 }
 
-async function saveNotes() {
-  const notes = document.getElementById('notes-area').value;
-  await sb.from('projects').update({ notes }).eq('id', currentProjectId);
-  const p = projects.find(p => p.id === currentProjectId);
-  if (p) p.notes = notes;
+function saveNotes() {
+  const p = getProject();
+  if (!p) return;
+  p.notes = document.getElementById('notes-area').value;
+  saveState();
   document.getElementById('notes-saved').textContent = 'Saved · ' + new Date().toLocaleTimeString();
 }
 
+// Auto-save notes
+let notesTimer;
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('notes-area')?.addEventListener('input', () => {
     clearTimeout(notesTimer);
-    notesTimer = setTimeout(saveNotes, 2000);
+    notesTimer = setTimeout(saveNotes, 1500);
   });
 });
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // EXPORT
-// ═══════════════════════════════════════
-async function getCurrentAnalysis() {
-  if (!currentRunId) return null;
-  const { data } = await sb.from('analysis_runs').select('result').eq('id', currentRunId).single();
-  return data?.result || null;
+// ═══════════════════════════════════════════
+function getCurrentAnalysis() {
+  const p = getProject();
+  return p?.runs?.find(r => r.id === state.currentRunId)?.analysis || p?.runs?.[0]?.analysis;
 }
 
-async function exportTXT() {
-  const a = await getCurrentAnalysis();
-  const p = projects.find(p => p.id === currentProjectId);
+function exportTXT() {
+  const a = getCurrentAnalysis();
+  const p = getProject();
   if (!a) return alert('No analysis to export.');
-  let txt = `THEMELENS — QUALITATIVE ANALYSIS REPORT\n${'═'.repeat(50)}\nProject: ${p.title}\nDate: ${new Date().toLocaleDateString()}\n\nSUMMARY\n${a.summary}\n\nThemes: ${a.total_themes} | Codes: ${a.total_codes}\n\n${'═'.repeat(50)}\n\n`;
+  let txt = `THEMELENS — QUALITATIVE ANALYSIS REPORT\n${'═'.repeat(50)}\n\nProject: ${p.title}\n${p.description ? 'Description: ' + p.description + '\n' : ''}Date: ${new Date().toLocaleDateString()}\n\n${'─'.repeat(50)}\n\nSUMMARY\n${a.summary}\n\nThemes: ${a.total_themes} | Codes: ${a.total_codes}\n\n${'═'.repeat(50)}\n\n`;
   (a.themes||[]).forEach((t,i) => {
     txt += `THEME ${i+1}: ${t.theme_name}\n${t.theme_description}\n\n`;
     (t.subthemes||[]).forEach(s => {
@@ -1310,25 +1342,27 @@ async function exportTXT() {
     txt += '─'.repeat(50) + '\n\n';
   });
   if (a.analytical_memo) txt += `ANALYTICAL MEMO\n${a.analytical_memo}\n`;
-  download(new Blob([txt],{type:'text/plain;charset=utf-8'}), 'themelens_report.txt');
+  if (p.notes) txt += `\nRESEARCHER NOTES\n${p.notes}\n`;
+  download(new Blob([txt], {type:'text/plain;charset=utf-8'}), 'themelens_report.txt');
 }
 
-async function exportCSV() {
-  const a = await getCurrentAnalysis();
+function exportCSV() {
+  const a = getCurrentAnalysis();
   if (!a) return alert('No analysis to export.');
-  let rows = [['Theme','Subtheme','Code ID','Code','Code Description','Excerpt','Relevance']];
+  let rows = [['Theme ID','Theme','Subtheme ID','Subtheme','Code ID','Code','Code Description','Excerpt','Relevance']];
   (a.themes||[]).forEach(t => (t.subthemes||[]).forEach(s => (s.codes||[]).forEach(c => (c.excerpts||[]).forEach(e => {
-    rows.push([t.theme_name, s.subtheme_name, c.code_id, c.code_label, c.code_description, e.text, e.relevance]);
+    rows.push([t.theme_id, t.theme_name, s.subtheme_id, s.subtheme_name, c.code_id, c.code_label, c.code_description, e.text, e.relevance]);
   }))));
   const csv = rows.map(r => r.map(cell => `"${String(cell||'').replace(/"/g,'""')}"`).join(',')).join('\n');
-  download(new Blob([csv],{type:'text/csv;charset=utf-8'}), 'themelens_codes.csv');
+  download(new Blob([csv], {type:'text/csv;charset=utf-8'}), 'themelens_codes.csv');
 }
 
-async function exportJSON() {
-  const a = await getCurrentAnalysis();
-  const p = projects.find(p => p.id === currentProjectId);
+function exportJSON() {
+  const a = getCurrentAnalysis();
+  const p = getProject();
   if (!a) return alert('No analysis to export.');
-  download(new Blob([JSON.stringify({project:p.title,exported:new Date().toISOString(),analysis:a},null,2)],{type:'application/json'}), 'themelens_analysis.json');
+  const out = { project: p.title, description: p.description, exported: new Date().toISOString(), analysis: a };
+  download(new Blob([JSON.stringify(out,null,2)], {type:'application/json'}), 'themelens_analysis.json');
 }
 
 function download(blob, name) {
@@ -1338,21 +1372,19 @@ function download(blob, name) {
   URL.revokeObjectURL(url);
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════
 // UTILITIES
-// ═══════════════════════════════════════
-function showLoading(msg) {
-  document.getElementById('loading-msg').textContent = msg || 'Loading...';
-  document.getElementById('loading-overlay').classList.add('visible');
-  ['ls1','ls2','ls3','ls4','ls5'].forEach(s => document.getElementById(s).classList.remove('active'));
-}
-function hideLoading() { document.getElementById('loading-overlay').classList.remove('visible'); }
+// ═══════════════════════════════════════════
 function openModal(id) { document.getElementById(id).classList.add('visible'); }
 function closeModal(id) { document.getElementById(id).classList.remove('visible'); }
 function showErr(id, msg) { const el = document.getElementById(id); el.textContent = '✗ ' + msg; el.classList.add('visible'); }
 function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function fmtDate(iso) { try { return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); } catch(e) { return ''; } }
-document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('visible'); }));
+function fmtDate(iso) { try { return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); } catch(e) { return iso; } }
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('visible'); });
+});
 </script>
 </body>
 </html>
